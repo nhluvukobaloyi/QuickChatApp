@@ -17,35 +17,79 @@ package quickchatapp;
      */
 
 
+
 public class RegLogin {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        Login logic = new Login();
+    
+    // Stored values
+    private String userName;
+    private String password;
+    private String cell;
+    private String firstName;
+    private String lastName;
 
-        System.out.println("=== REGISTRATION ===");
-        System.out.print("Enter first name: ");
-        String firstName = sc.nextLine();
-        System.out.print("Enter last name: ");
-        String lastName = sc.nextLine();
-        System.out.print("Enter username: ");
-        String userName = sc.nextLine();
-        System.out.print("Enter password: ");
-        String password = sc.nextLine();
-        System.out.print("Enter cell (+27...): ");
-        String cell = sc.nextLine();
-
-       String status = logic.registerUser(userName, password, cell, firstName, lastName);
-
-        if (status.contains("successfully")) {
-            System.out.println("\n=== LOGIN ===");
-            System.out.print("Enter username: ");
-            String inUser = sc.nextLine();
-            System.out.print("Enter password: ");
-            String inPass = sc.nextLine();
-
-          boolean ok = logic.loginUser(inUser, inPass);
-        }
-        sc.close();
+    public RegLogin() {
     }
 
-   }
+   
+
+    public boolean checkUserName(String userName) {
+        return userName.contains("_") && userName.length() <= 5;
+    }
+
+    public boolean checkPasswordComplexity(String password) {
+        boolean hasUpper = !password.equals(password.toLowerCase());
+        boolean hasNumber = password.matches(".*[0-9].*");
+        boolean hasSpecial = password.matches(".*[!@#$%^&*()_+=<>?].*");
+        boolean hasLength = password.length() >= 8;
+        return hasUpper && hasNumber && hasSpecial && hasLength;
+    }
+
+    public boolean checkCellPhoneNumber(String cell) {
+        return cell.startsWith("+27") && cell.length() == 12;
+    }
+
+    public String registerUser(String userName, String password, String cell, String firstName, String lastName) {
+        if (!checkUserName(userName)) {
+            return "Username is not correctly formatted, please ensure that your username contains an underscore and is no more than 5 characters in length.";
+        }
+        if (!checkPasswordComplexity(password)) {
+            return "Password is not correctly formatted, please ensure that the password contains at least 8 characters, a capital letter, a number and a special character.";
+        }
+        if (!checkCellPhoneNumber(cell)) {
+            return "Cell phone number is incorrectly formatted or does not contain an international code.";
+        }
+
+     
+        this.userName = userName;
+        this.password = password;
+        this.cell = cell;
+        this.firstName = firstName;
+        this.lastName = lastName;
+
+        return "User registered successfully";
+    }
+
+    public boolean loginUser(String inUser, String inPass) {
+        if (this.userName == null) {
+            return false;
+        }
+        return inUser.equals(this.userName) && inPass.equals(this.password);
+    }
+
+    public String returnLoginStatus(String inUser, String inPass) {
+        if (loginUser(inUser, inPass)) {
+            return "Welcome " + this.firstName + " " + this.lastName + ", it is great to see you again.";
+        } else {
+            return "Username or password incorrect, please try again.";
+        }
+    }
+
+    
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+}

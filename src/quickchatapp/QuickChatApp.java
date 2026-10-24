@@ -17,6 +17,8 @@ package quickchatapp;
      */
 
 
+
+
 public class QuickChatApp {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
@@ -34,18 +36,32 @@ public class QuickChatApp {
         System.out.print("Enter cell (+27...): ");
         String cell = sc.nextLine();
 
-       String status = logic.registerUser(userName, password, cell, firstName, lastName);
+        String status = logic.registerUser(userName, password, cell, firstName, lastName);
+        System.out.println(status);
 
-        if (status.contains("successfully")) {
-            System.out.println("\n=== LOGIN ===");
+        if (status.toLowerCase().contains("successfully")) {
+            System.out.println("=== LOGIN ===");
             System.out.print("Enter username: ");
             String inUser = sc.nextLine();
             System.out.print("Enter password: ");
             String inPass = sc.nextLine();
 
-          boolean ok = logic.loginUser(inUser, inPass);
+            boolean ok = logic.loginUser(inUser, inPass);
+            System.out.println("Welcome to QuickChatApp");
+
+           
+            if (ok) {
+                System.out.println("Login successful, starting QuickChat");
+                Messaging m = new Messaging();
+               
+            } else {
+                System.out.println("Login failed, cannot open QuickChat.");
+            }
+
+        } else {
+            System.out.println("Registration failed, please fix and run again.");
         }
+        
         sc.close();
     }
-
-   }
+}
