@@ -23,7 +23,7 @@ public class QuickChatApp {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         Login logic = new Login();
-
+Messaging messaging =new Messaging();
         System.out.println("=== REGISTRATION ===");
         System.out.print("Enter first name: ");
         String firstName = sc.nextLine();
@@ -53,6 +53,7 @@ public class QuickChatApp {
             if (ok) {
                 System.out.println("Login successful, starting QuickChat");
                 Messaging m = new Messaging();
+                m.runMessaging();
                
             } else {
                 System.out.println("Login failed, cannot open QuickChat.");
